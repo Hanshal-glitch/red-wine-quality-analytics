@@ -1,9 +1,5 @@
 # 🍷 Red Wine Quality Analytics
 
-[![Python Application CI](https://github.com/red-wine-quality-analytics/actions/workflows/python-app.yml/badge.svg)](https://github.com)
-[![Python Version](https://img.shields.io/badge/python-3.10%20%7C%203.11-blue.svg)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Streamlit App](https://img.shields.io/badge/Streamlit-App%20Available-FF4B4B.svg)](app.py)
 
 An end-to-end machine learning analytics system and interactive web application for analyzing, modeling, and predicting red wine sensory quality from physicochemical tests using the **UCI Machine Learning Repository** Red Wine dataset (Cortez et al., 2009).
 
