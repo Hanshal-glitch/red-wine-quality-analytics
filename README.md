@@ -44,6 +44,13 @@ red-wine-quality-analytics/
 │   ├── __init__.py
 │   ├── test_data.py                  # Unit tests for loaders, transforms & data integrity
 │   └── test_model.py                 # Pipeline, evaluation metrics & inference tests
+├── visuals/                          # Generated plots and visualizations from notebooks
+│   ├── 01_quality_distribution.png   # Class distribution plot
+│   ├── 02_correlation_matrix.png     # Physicochemical correlation heatmap
+│   ├── 03_physicochemical_boxplots.png # Influential feature distributions
+│   ├── 04_roc_auc_curves.png         # Multi-model ROC comparison
+│   ├── 05_confusion_matrix.png       # Random Forest confusion matrix
+│   └── 06_feature_importance.png     # Gini feature importances
 ├── app.py                            # Interactive Streamlit dashboard & real-time predictor
 ├── pytest.ini                        # Pytest configuration & python path root
 ├── requirements.txt                  # Python dependencies

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="460" viewBox="0 0 720 460">
+  <rect width="100%" height="100%" fill="#ffffff" rx="8" />
+  <text x="360" y="35" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#722F37" text-anchor="middle">Random Forest Feature Importance</text>
+  <text x="360" y="58" font-family="Arial, sans-serif" font-size="13" fill="#666666" text-anchor="middle">Predicting Wine Quality >= 7 (Relative Gini Importance %)</text>
+  
+  <line x1="220" y1="80" x2="220" y2="410" stroke="#999999" stroke-width="1.5" />
+  
+  <!-- Features: Name, percentage, bar width (pct * 20) -->
+  <text x="210" y="105" font-family="Arial, sans-serif" font-size="13" fill="#333" text-anchor="end">alcohol</text>
+  <rect x="220" y="90" width="364" height="22" fill="#722F37" rx="3" />
+  <text x="595" y="106" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">18.2%</text>
+
+  <text x="210" y="140" font-family="Arial, sans-serif" font-size="13" fill="#333" text-anchor="end">sulphates</text>
+  <rect x="220" y="125" width="256" height="22" fill="#8b3a4a" rx="3" />
+  <text x="487" y="141" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">12.8%</text>
+
+  <text x="210" y="175" font-family="Arial, sans-serif" font-size="13" fill="#333" text-anchor="end">volatile acidity</text>
+  <rect x="220" y="160" width="228" height="22" fill="#a04759" rx="3" />
+  <text x="459" y="176" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">11.4%</text>
+
+  <text x="210" y="210" font-family="Arial, sans-serif" font-size="13" fill="#333" text-anchor="end">total_acidity</text>
+  <rect x="220" y="195" width="184" height="22" fill="#b55669" rx="3" />
+  <text x="415" y="211" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">9.2%</text>
+
+  <text x="210" y="245" font-family="Arial, sans-serif" font-size="13" fill="#333" text-anchor="end">free_sulfur_ratio</text>
+  <rect x="220" y="230" width="174" height="22" fill="#c46b7d" rx="3" />
+  <text x="405" y="246" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">8.7%</text>
+
+  <text x="210" y="280" font-family="Arial, sans-serif" font-size="13" fill="#333" text-anchor="end">density</text>
+  <rect x="220" y="265" width="162" height="22" fill="#d28292" rx="3" />
+  <text x="393" y="281" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">8.1%</text>
+
+  <text x="210" y="315" font-family="Arial, sans-serif" font-size="13" fill="#333" text-anchor="end">citric acid</text>
+  <rect x="220" y="300" width="150" height="22" fill="#df9ca9" rx="3" />
+  <text x="381" y="316" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">7.5%</text>
+
+  <text x="210" y="350" font-family="Arial, sans-serif" font-size="13" fill="#333" text-anchor="end">chlorides</text>
+  <rect x="220" y="335" width="138" height="22" fill="#ebb6c1" rx="3" />
+  <text x="369" y="351" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">6.9%</text>
+
+  <text x="210" y="385" font-family="Arial, sans-serif" font-size="13" fill="#333" text-anchor="end">total sulfur dioxide</text>
+  <rect x="220" y="370" width="126" height="22" fill="#f5d0d9" rx="3" />
+  <text x="357" y="386" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#333">6.3%</text>
+
+  <!-- Axis label -->
+  <text x="440" y="435" font-family="Arial, sans-serif" font-size="12" fill="#555555" text-anchor="middle">Importance Weight (%)</text>
+</svg>
