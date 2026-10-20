@@ -51,6 +51,7 @@ def clean_and_deduplicate(df: pd.DataFrame) -> Tuple[pd.DataFrame, int]:
     if df_cleaned.isnull().any().any():
         df_cleaned = df_cleaned.dropna()
 
+    df_cleaned = df_cleaned.reset_index(drop=True)
     return df_cleaned, duplicates_removed
 
 

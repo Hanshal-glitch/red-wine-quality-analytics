@@ -82,6 +82,7 @@ def train_and_evaluate_models(
 def train_pipeline(
     raw_path: Optional[str] = None,
     models_dir: Optional[str] = None,
+    processed_dir: Optional[str] = None,
     save_artifacts: bool = True,
 ) -> Dict[str, Any]:
     """End-to-end training pipeline.
@@ -89,6 +90,7 @@ def train_pipeline(
     Args:
         raw_path: Optional custom path to raw dataset.
         models_dir: Optional custom directory to save trained model artifacts.
+        processed_dir: Optional custom directory to save processed datasets.
         save_artifacts: Whether to save artifacts to disk.
 
     Returns:
@@ -96,13 +98,14 @@ def train_pipeline(
     """
     out_models = Path(models_dir) if models_dir else MODELS_DIR
     out_models.mkdir(parents=True, exist_ok=True)
-    PROCESSED_DATA_DIR.mkdir(parents=True, exist_ok=True)
+    out_processed = Path(processed_dir) if processed_dir else PROCESSED_DATA_DIR
+    out_processed.mkdir(parents=True, exist_ok=True)
 
     df_raw = load_raw_data(raw_path)
     df_cleaned, _ = clean_and_deduplicate(df_raw)
 
     # Save cleaned data
-    save_processed_data(df_cleaned, str(PROCESSED_DATA_DIR / "winequality-cleaned.csv"))
+    save_processed_data(df_cleaned, str(out_processed / "winequality-cleaned.csv"))
 
     # Train / test split and scaling
     X_train_scaled, X_test_scaled, y_train, y_test, scaler = create_train_test_split(
@@ -112,11 +115,11 @@ def train_pipeline(
     # Save scaled train and test data
     train_export = X_train_scaled.copy()
     train_export["quality_target"] = y_train.values
-    save_processed_data(train_export, str(PROCESSED_DATA_DIR / "train_scaled.csv"))
+    save_processed_data(train_export, str(out_processed / "train_scaled.csv"))
 
     test_export = X_test_scaled.copy()
     test_export["quality_target"] = y_test.values
-    save_processed_data(test_export, str(PROCESSED_DATA_DIR / "test_scaled.csv"))
+    save_processed_data(test_export, str(out_processed / "test_scaled.csv"))
 
     results = train_and_evaluate_models(X_train_scaled, X_test_scaled, y_train, y_test)
 

@@ -34,14 +34,15 @@ def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
         0.0, df_out["total sulfur dioxide"] - df_out["free sulfur dioxide"]
     )
 
-    # Ratio of free SO2 to total SO2 (antioxidant effectiveness)
-    df_out["free_sulfur_ratio"] = df_out["free sulfur dioxide"] / (
+    # Ratio of free SO2 to total SO2 (antioxidant effectiveness, physically bounded [0, 1])
+    free_ratio = df_out["free sulfur dioxide"] / (
         df_out["total sulfur dioxide"] + 1e-5
     )
+    df_out["free_sulfur_ratio"] = np.clip(free_ratio, 0.0, 1.0)
 
     # Balance between alcohol content and residual sugar
-    df_out["alcohol_to_sugar_ratio"] = df_out["alcohol"] / (
-        df_out["residual sugar"] + 1e-5
+    df_out["alcohol_to_sugar_ratio"] = np.maximum(
+        0.0, df_out["alcohol"] / (df_out["residual sugar"] + 1e-5)
     )
 
     return df_out
