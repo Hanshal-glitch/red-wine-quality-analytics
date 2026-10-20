@@ -46,18 +46,39 @@ def test_train_and_evaluate_models():
 def test_end_to_end_training_and_artifacts(tmp_path):
     """Test training pipeline writes valid artifacts and returns summary."""
     models_dir = tmp_path / "models"
-    summary = train_pipeline(models_dir=str(models_dir), save_artifacts=True)
+    processed_dir = tmp_path / "processed"
+    summary = train_pipeline(
+        models_dir=str(models_dir),
+        processed_dir=str(processed_dir),
+        save_artifacts=True,
+    )
 
     assert "best_model_name" in summary
     assert (models_dir / "wine_quality_model.joblib").exists()
     assert (models_dir / "scaler.joblib").exists()
     assert (models_dir / "model_metadata.json").exists()
+    assert (processed_dir / "winequality-cleaned.csv").exists()
+    assert (processed_dir / "train_scaled.csv").exists()
+    assert (processed_dir / "test_scaled.csv").exists()
+
+
+def test_load_artifacts_not_found(tmp_path):
+    """Verify load_artifacts raises FileNotFoundError when artifacts do not exist."""
+    empty_dir = tmp_path / "empty_models"
+    empty_dir.mkdir()
+    with pytest.raises(FileNotFoundError):
+        load_artifacts(models_dir=str(empty_dir))
 
 
 def test_predict_wine_quality_inference(tmp_path):
     """Test inference function produces valid probability and classification label."""
     models_dir = tmp_path / "models"
-    train_pipeline(models_dir=str(models_dir), save_artifacts=True)
+    processed_dir = tmp_path / "processed"
+    train_pipeline(
+        models_dir=str(models_dir),
+        processed_dir=str(processed_dir),
+        save_artifacts=True,
+    )
 
     sample_wine = {
         "fixed acidity": 8.5,
@@ -81,3 +102,69 @@ def test_predict_wine_quality_inference(tmp_path):
     assert "probability_high_quality" in result
     assert 0.0 <= result["probability_high_quality"] <= 1.0
     assert 0.0 <= result["confidence_percentage"] <= 100.0
+
+
+def test_predict_missing_features(tmp_path):
+    """Verify predict_wine_quality raises ValueError when input lacks required features."""
+    models_dir = tmp_path / "models"
+    processed_dir = tmp_path / "processed"
+    train_pipeline(
+        models_dir=str(models_dir),
+        processed_dir=str(processed_dir),
+        save_artifacts=True,
+    )
+
+    incomplete_sample = {
+        "fixed acidity": 8.5,
+        "volatile acidity": 0.28,
+        # missing other required physicochemical features
+    }
+
+    with pytest.raises(ValueError, match="Missing required wine feature"):
+        predict_wine_quality(incomplete_sample, models_dir=str(models_dir))
+
+
+def test_predict_batch_inference(tmp_path):
+    """Verify predict_wine_quality handles multi-sample DataFrame batch input."""
+    models_dir = tmp_path / "models"
+    processed_dir = tmp_path / "processed"
+    train_pipeline(
+        models_dir=str(models_dir),
+        processed_dir=str(processed_dir),
+        save_artifacts=True,
+    )
+
+    batch_df = pd.DataFrame([
+        {
+            "fixed acidity": 8.5,
+            "volatile acidity": 0.28,
+            "citric acid": 0.56,
+            "residual sugar": 1.8,
+            "chlorides": 0.092,
+            "free sulfur dioxide": 35.0,
+            "total sulfur dioxide": 103.0,
+            "density": 0.9969,
+            "pH": 3.30,
+            "sulphates": 0.75,
+            "alcohol": 10.5,
+        },
+        {
+            "fixed acidity": 7.0,
+            "volatile acidity": 0.85,
+            "citric acid": 0.05,
+            "residual sugar": 2.5,
+            "chlorides": 0.120,
+            "free sulfur dioxide": 10.0,
+            "total sulfur dioxide": 60.0,
+            "density": 0.9980,
+            "pH": 3.45,
+            "sulphates": 0.45,
+            "alcohol": 9.2,
+        },
+    ])
+
+    batch_result = predict_wine_quality(batch_df, models_dir=str(models_dir))
+    assert "predictions" in batch_result
+    assert len(batch_result["predictions"]) == 2
+    assert len(batch_result["prediction_binary"]) == 2
+    assert len(batch_result["probability_high_quality"]) == 2

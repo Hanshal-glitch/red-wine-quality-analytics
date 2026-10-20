@@ -96,3 +96,30 @@ def test_prepare_features_and_target_binary():
     assert "quality" not in X.columns
     assert set(y.unique()).issubset({0, 1})
     assert len(X) == len(y)
+
+
+def test_load_raw_data_file_not_found():
+    """Verify load_raw_data raises FileNotFoundError for non-existent path."""
+    with pytest.raises(FileNotFoundError):
+        load_raw_data("non_existent_file.csv")
+
+
+def test_clean_and_deduplicate_reset_index():
+    """Verify deduplication returns a continuous 0-based index."""
+    df = load_raw_data()
+    df_cleaned, _ = clean_and_deduplicate(df)
+    assert list(df_cleaned.index) == list(range(len(df_cleaned)))
+
+
+def test_prepare_features_and_target_missing_column():
+    """Verify prepare_features_and_target raises KeyError when target column is missing."""
+    df = load_raw_data().drop(columns=["quality"])
+    with pytest.raises(KeyError):
+        prepare_features_and_target(df, target_col="quality")
+
+
+def test_scale_features_unknown_method():
+    """Verify scale_features raises ValueError for unsupported scaling method."""
+    df = load_raw_data().drop(columns=["quality"]).head(10)
+    with pytest.raises(ValueError, match="Unknown scaling method"):
+        scale_features(df, method="unsupported_method")
