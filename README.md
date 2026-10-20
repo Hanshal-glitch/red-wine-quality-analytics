@@ -1,11 +1,11 @@
-# 🍷 Red Wine Quality Analytics
+# Red Wine Quality Analytics
 
 
 An end-to-end machine learning analytics system and interactive web application for analyzing, modeling, and predicting red wine sensory quality from physicochemical tests using the **UCI Machine Learning Repository** Red Wine dataset (Cortez et al., 2009).
 
 ---
 
-## 📌 Architecture & Repository Layout
+## Architecture & Repository Layout
 
 ```
 red-wine-quality-analytics/
@@ -60,7 +60,7 @@ red-wine-quality-analytics/
 
 ---
 
-## 📊 Dataset Overview
+## Dataset Overview
 
 The dataset consists of 1,599 red wine samples evaluated by sensory sommeliers alongside 11 physicochemical measurements:
 
@@ -89,7 +89,7 @@ The dataset consists of 1,599 red wine samples evaluated by sensory sommeliers a
 
 ---
 
-## 🚀 Quickstart & Installation
+## Quickstart & Installation
 
 ### 1. Clone the Repository
 ```bash
@@ -107,7 +107,7 @@ pip install -r requirements.txt
 
 ---
 
-## 🧪 Pipeline Usage
+## Pipeline Usage
 
 ### Run Data Preprocessing
 ```bash
@@ -129,7 +129,7 @@ Accepts arbitrary wine parameters and returns quality class probabilities and re
 
 ---
 
-## 🖥️ Interactive Web Application (Streamlit)
+## Interactive Web Application (Streamlit)
 
 Launch the interactive wine sensory and quality predictor:
 
@@ -138,14 +138,14 @@ streamlit run app.py
 ```
 
 ### Features:
-- 🎛️ **Physicochemical Sliders**: Real-time evaluation of alcohol, volatile acidity, sulphates, and acidity.
-- 🍷 **Preset Profiles**: Instant loading of Premium Reserve, Table Wine, and High-Volatile Acid wine profiles.
-- 📊 **Exploratory Visualizations**: Interactive distribution charts and Pearson correlation tables.
-- 🔍 **Model Benchmarks**: Accuracy, F1, and feature importance rankings.
+-  **Physicochemical Sliders**: Real-time evaluation of alcohol, volatile acidity, sulphates, and acidity.
+-  **Preset Profiles**: Instant loading of Premium Reserve, Table Wine, and High-Volatile Acid wine profiles.
+-  **Exploratory Visualizations**: Interactive distribution charts and Pearson correlation tables.
+-  **Model Benchmarks**: Accuracy, F1, and feature importance rankings.
 
 ---
 
-## 🧪 Running Automated Tests
+## Running Automated Tests
 
 Run the full unit and integration test suite:
 
@@ -157,7 +157,7 @@ GitHub Actions automatically runs this suite on all pushes and pull requests acr
 
 ---
 
-## 📈 Modeling Results Summary
+## Modeling Results Summary
 
 | Model | Accuracy | F1-Score ($\ge 7$) | ROC-AUC |
 | :--- | :---: | :---: | :---: |
@@ -172,5 +172,5 @@ GitHub Actions automatically runs this suite on all pushes and pull requests acr
 
 ---
 
-## 📄 License
+## License
 This project is open-source under the [MIT License](LICENSE).
