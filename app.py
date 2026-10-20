@@ -61,7 +61,9 @@ def get_dataset():
 def ensure_model_artifacts():
     """Ensure trained model artifacts exist, training on the fly if needed."""
     model_path = MODELS_DIR / "wine_quality_model.joblib"
-    if not model_path.exists():
+    scaler_path = MODELS_DIR / "scaler.joblib"
+    meta_path = MODELS_DIR / "model_metadata.json"
+    if not (model_path.exists() and scaler_path.exists() and meta_path.exists()):
         with st.spinner("Training baseline model for initial startup..."):
             train_pipeline()
 
@@ -168,51 +170,62 @@ def main():
         with c1:
             fixed_acidity = st.slider(
                 "Fixed Acidity (g/dm³)", 4.0, 16.0, float(defaults["fixed acidity"]), 0.1,
-                help="Tartaric acid concentration responsible for wine freshness."
+                help="Tartaric acid concentration responsible for wine freshness.",
+                key=f"fixed_acidity_{preset}",
             )
             volatile_acidity = st.slider(
                 "Volatile Acidity (g/dm³)", 0.1, 1.6, float(defaults["volatile acidity"]), 0.01,
-                help="Acetic acid content; high levels cause an unpleasant vinegar flavor."
+                help="Acetic acid content; high levels cause an unpleasant vinegar flavor.",
+                key=f"volatile_acidity_{preset}",
             )
             citric_acid = st.slider(
                 "Citric Acid (g/dm³)", 0.0, 1.0, float(defaults["citric acid"]), 0.01,
-                help="Adds crispness and fresh fruit flavors in small quantities."
+                help="Adds crispness and fresh fruit flavors in small quantities.",
+                key=f"citric_acid_{preset}",
             )
             residual_sugar = st.slider(
                 "Residual Sugar (g/dm³)", 0.5, 16.0, float(defaults["residual sugar"]), 0.1,
-                help="Amount of sugar remaining after fermentation ceases."
+                help="Amount of sugar remaining after fermentation ceases.",
+                key=f"residual_sugar_{preset}",
             )
 
         with c2:
             chlorides = st.slider(
                 "Chlorides (g/dm³)", 0.01, 0.65, float(defaults["chlorides"]), 0.005,
-                help="Amount of mineral salts."
+                help="Amount of mineral salts.",
+                key=f"chlorides_{preset}",
             )
             free_so2 = st.slider(
                 "Free Sulfur Dioxide (mg/dm³)", 1.0, 75.0, float(defaults["free sulfur dioxide"]), 1.0,
-                help="Active SO2 protecting wine against oxidation and microbes."
+                help="Active SO2 protecting wine against oxidation and microbes.",
+                key=f"free_so2_{preset}",
             )
             total_so2 = st.slider(
                 "Total Sulfur Dioxide (mg/dm³)", 6.0, 290.0, float(defaults["total sulfur dioxide"]), 1.0,
-                help="Free and bound forms of SO2 combined."
+                help="Free and bound forms of SO2 combined.",
+                key=f"total_so2_{preset}",
             )
             density = st.slider(
                 "Density (g/cm³)", 0.990, 1.004, float(defaults["density"]), 0.0002,
-                help="Correlates with percent alcohol and residual sugar."
+                help="Correlates with percent alcohol and residual sugar.",
+                key=f"density_{preset}",
             )
 
         with c3:
             ph = st.slider(
                 "pH Level", 2.7, 4.1, float(defaults["pH"]), 0.01,
-                help="Acidity on a scale of 0 (very acidic) to 14 (basic). Wine usually 3.0-3.8."
+                help="Acidity on a scale of 0 (very acidic) to 14 (basic). Wine usually 3.0-3.8.",
+                key=f"ph_{preset}",
             )
             sulphates = st.slider(
                 "Sulphates (g/dm³)", 0.3, 2.0, float(defaults["sulphates"]), 0.01,
-                help="Potassium sulphate additive contributing to antimicrobial/antioxidant activity."
+                help="Potassium sulphate additive contributing to antimicrobial/antioxidant activity.",
+                key=f"sulphates_{preset}",
             )
             alcohol = st.slider(
                 "Alcohol (% by volume)", 8.0, 15.0, float(defaults["alcohol"]), 0.1,
-                help="Percent alcohol content by volume."
+                help="Percent alcohol content by volume.",
+                key=f"alcohol_{preset}",
             )
 
         # Collect input dictionary
@@ -254,7 +267,7 @@ def main():
 
             with p_col2:
                 st.metric("High-Quality Probability", f"{res['confidence_percentage']}%")
-                st.progress(prob)
+                st.progress(min(max(float(prob), 0.0), 1.0))
 
             with st.expander("🔬 Derived Domain Features"):
                 sample_df = pd.DataFrame([sample_input])
@@ -291,7 +304,7 @@ def main():
         st.bar_chart(data=dist_df, x="Quality Score", y="Count")
 
         st.subheader("Correlation with Quality")
-        corr = clean_df.corr()["quality"].sort_values(ascending=False).drop("quality")
+        corr = clean_df.corr(numeric_only=True)["quality"].sort_values(ascending=False).drop("quality")
         corr_df = corr.reset_index()
         corr_df.columns = ["Physicochemical Feature", "Pearson Correlation"]
         st.dataframe(corr_df.style.format({"Pearson Correlation": "{:.3f}"}), use_container_width=True)
@@ -328,9 +341,9 @@ def main():
 
             # Feature Importance
             model, scaler, _ = load_artifacts()
-            if hasattr(model, "feature_importances_"):
+            feat_names = metadata.get("feature_names", [])
+            if hasattr(model, "feature_importances_") and len(feat_names) == len(model.feature_importances_):
                 st.subheader("Feature Importances")
-                feat_names = metadata.get("feature_names", [])
                 fi_df = pd.DataFrame({
                     "Feature": feat_names,
                     "Importance": model.feature_importances_,

@@ -100,6 +100,10 @@ red-wine-quality-analytics/
 |   |-- proposal.md                    # Project proposal & timeline
 |   |-- final_report.md                # Comprehensive final analysis report
 |   |-- figures/                       # Generated visual assets
+|-- models/
+|   |-- wine_quality_model.joblib      # Serialized champion model artifact
+|   |-- scaler.joblib                  # Serialized fitted StandardScaler
+|   |-- model_metadata.json            # Model benchmarks & feature metadata
 |-- notebooks/
 |   |-- 01_eda_and_visualizations.ipynb
 |   |-- 02_preprocessing.ipynb
@@ -113,6 +117,7 @@ red-wine-quality-analytics/
 |   |-- test_data.py                   # Data integrity and loader tests
 |   |-- test_model.py                  # Pipeline and prediction tests
 |-- app.py                             # Interactive Streamlit application
+|-- pytest.ini                         # Pytest configuration & python path root
 |-- requirements.txt                   # Dependency specifications
 |-- LICENSE                            # MIT License
 |-- README.md                          # Repository guide

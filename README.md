@@ -26,6 +26,10 @@ red-wine-quality-analytics/
 │       ├── quality_distribution.svg  # Class distribution visualization
 │       ├── feature_importance.svg    # Random Forest feature importance chart
 │       └── system_architecture.svg   # Dataflow and architecture diagram
+├── models/
+│   ├── wine_quality_model.joblib     # Serialized champion model artifact
+│   ├── scaler.joblib                 # Serialized fitted StandardScaler
+│   └── model_metadata.json           # Model benchmarks, feature list & metadata
 ├── notebooks/
 │   ├── 01_eda_and_visualizations.ipynb      # Exploratory data analysis & statistical distributions
 │   ├── 02_preprocessing.ipynb               # Deduplication, feature engineering & scaling
@@ -41,6 +45,7 @@ red-wine-quality-analytics/
 │   ├── test_data.py                  # Unit tests for loaders, transforms & data integrity
 │   └── test_model.py                 # Pipeline, evaluation metrics & inference tests
 ├── app.py                            # Interactive Streamlit dashboard & real-time predictor
+├── pytest.ini                        # Pytest configuration & python path root
 ├── requirements.txt                  # Python dependencies
 ├── LICENSE                           # MIT License
 └── README.md                         # Project documentation
